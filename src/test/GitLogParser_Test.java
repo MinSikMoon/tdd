@@ -38,8 +38,7 @@ public class GitLogParser_Test {
 	 */
 	@Test
 	public void tc1_param_txt_() throws Exception {
-		String result = gitLogParser.getCommitLogAsString("param.txt");
-		assertEquals(compareText, result);
+		assertEquals(compareText, gitLogParser.getCommitLogAsString("param.txt"));
 	}
 	
 	

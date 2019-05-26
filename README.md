@@ -61,4 +61,129 @@
     요렇게 프로젝트 하나 만들어 주시고.
     나는 예제로 쓰일 param.txt를 넣어두었다.
     param.txt는 commit hash값 시작에 <kbd>-></kbd>, message값 시작에 <kbd>|</kbd>, 끝에 <kbd>;</kbd>  토큰으로 서로를 구분짓게 해놓았다.
-- ## 3. 뭐 부터 해볼까? : 파일을 잘 읽어오는지 확인해보고 싶다.
+- ## 3. 뭐 부터 해볼까? : 테스트케이스 준비
+- test폴더에 모듈 테스트용 테스트 케이스 클래스하나 만들었다.
+    ````java
+    package test;
+
+    import static org.junit.Assert.assertEquals;
+
+    import java.io.FileReader;
+    import java.io.FileWriter;
+    import java.io.IOException;
+    import java.io.Reader;
+    import java.io.Writer;
+
+    import org.junit.After;
+    import org.junit.Before;
+    import org.junit.Test;
+
+    import module.GitLogParser;
+
+    public class GitLogParser_Test {
+    	//테스트용 준비물들
+    	Reader reader;
+    	Writer writer;
+    	String compareText = "";
+    	char[] buffer = new char[1000];
+    	GitLogParser gitLogParser;
+    
+    	@Before
+    	public void 준비() throws Exception {
+    		reader = new FileReader("param.txt");
+    		writer = new FileWriter("test.txt");
+    		while(reader.read(buffer) != -1) 
+    			compareText += new String(buffer);
+    		writer.write(compareText);
+    
+    		gitLogParser = new GitLogParser();
+    	}
+    	/**
+    	 * param.txt를 잘 읽어오는 가?
+    	 * @throws Exception 
+    	 */
+    	@Test
+    	public void tc1_param_txt_() throws Exception {
+    		String result = gitLogParser.getCommitLogAsString   ("param.txt");
+    		assertEquals(compareText, result);
+    	}
+    
+    
+    	@After
+    	public void 리더닫기() throws IOException {
+    		reader.close();
+    		writer.close();
+    	}
+    }
+
+    ````
+- ## 테스트 1 : getCommitLogAsString(String commitLogTxt) : txt 읽어와서 string으로 바꿔보기
+    ![image](https://user-images.githubusercontent.com/21155325/58383053-ee733000-800c-11e9-8fa1-a302e4d8e32f.png)
+
+- 그런 메소드 없다고 뭐라 뜬다. 만들러가보자.
+    ![image](https://user-images.githubusercontent.com/21155325/58383068-119ddf80-800d-11e9-87d9-9d215a634e42.png)  
+
+    ````java
+    package module;
+
+    import java.io.FileReader;
+    import java.io.Reader;
+
+    public class GitLogParser {
+
+    	public String getCommitLogAsString(String commitLog) throws     Exception {
+    		Reader reader = new FileReader(commitLog);
+    		try {
+    		} finally {
+    			reader.close();
+    		}
+    		return null;
+    	}
+
+    }
+    ````
+- 일단 요렇게 만들었는데, junit 돌려보면 당연히 fail, 빨간불뜬다.
+    ![image](https://user-images.githubusercontent.com/21155325/58383164-5118fb80-800e-11e9-92a9-b4a93ec339ea.png)  
+    - 이거 통과하게 하려면 gitLogParser의 해당 메소드 return에 compareText와 같은 string을 붙여넣으면 통과한다.
+    - 책에서는 그렇게 나오는데, 하나하나 하고 있으면 너무 오래걸리고 재미가 없다. 상식 선에서 속도감 있게 해보자.  
+    
+    ````java
+    package module;
+
+    import java.io.FileReader;
+    import java.io.Reader;
+
+    public class GitLogParser {
+
+    	public String getCommitLogAsString(String commitLog) throws     Exception {
+    		Reader reader = new FileReader(commitLog);
+    		String result = "";
+    		char[] buffer = new char[1000];
+    		try {
+    			while(reader.read(buffer) != -1) 
+    				result += new String(buffer);
+    		} finally {
+    			reader.close();
+    		}
+    		return result;
+    	}
+
+    }
+    ````
+    요렇게 바꿔주니까 통과한다. 오키 tc1 통과~
+- 리팩토링 : 테스트 케이스 인라인화
+    ````java
+    @Test
+    	public void tc1_param_txt_() throws Exception {
+    		String result = gitLogParser.getCommitLogAsString   ("param.txt");
+    		assertEquals(compareText, result);
+    	}
+    ````
+    인라인해서 1줄로 만들수 있다.
+    ![image](https://user-images.githubusercontent.com/21155325/58383259-70645880-800f-11e9-8582-18f6117f91a8.png)  
+    ````java
+	@Test
+	public void tc1_param_txt_() throws Exception {
+		assertEquals(compareText, gitLogParser.getCommitLogAsString("param.txt"));
+	}
+    ````
