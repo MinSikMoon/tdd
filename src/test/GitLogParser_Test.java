@@ -41,6 +41,10 @@ public class GitLogParser_Test {
 		assertEquals(compareText, gitLogParser.getCommitLogAsString("param.txt"));
 	}
 	
+	/**
+	 * 
+	 * @throws IOException
+	 */
 	
 	@After
 	public void 리더닫기() throws IOException {
