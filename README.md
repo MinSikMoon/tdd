@@ -111,6 +111,7 @@ message3 = gradeManager.getGradeMessage("관리자", 3055, "bronze");
 ## 1. 테스트1 : 메시지 1이 출력되는가? 
 ![image](https://user-images.githubusercontent.com/21155325/58563585-612b1800-8266-11e9-8f23-add1e8155060.png)
 - 위와 같이 직무가 사원일때 point가 0~499, prize 유무에 상관없이 "메시지1"이라는 메시지를 받을 수 있어야 한다.
+### 테스트 케이스 작성만으로도 우리가 얻은것.
 - 일단 위와 같은 테스트 케이스를 작성만 했는데도, 설계가 몇개 나왔다.
   1. GradeManager에 메시지들이 MESSAGE_1, MESSAGE_2.. 와 같이 enum으로 관리
   2. 함수가 static
