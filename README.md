@@ -101,3 +101,38 @@ message3 = gradeManager.getGradeMessage("관리자", 3055, "bronze");
 ````
 
 - 요런 식으로 gradeManager라는 객체의 getGradeMessage(직무, point, prize) 함수를 쓰면 필요한 message를 간편히 받아볼 수 있게끔 만들고 싶다. 
+
+## project 생성
+![image](https://user-images.githubusercontent.com/21155325/58563007-53c15e00-8265-11e9-8203-70feae3233cd.png)
+
+- 요렇게 프로젝트 하나 생성해준다. 여기서부터 만들어나갈 것이다.
+- 사실 GradeManager도 존재하지 않는 상태에서 테스트 케이스에서 실패 후 만들러 가야되는데, 먼저 만들어 놓았다. 다음번에 수정해보겠음.
+
+## 1. 테스트1 : 메시지 1이 출력되는가? 
+![image](https://user-images.githubusercontent.com/21155325/58563585-612b1800-8266-11e9-8f23-add1e8155060.png)
+- 위와 같이 직무가 사원일때 point가 0~499, prize 유무에 상관없이 "메시지1"이라는 메시지를 받을 수 있어야 한다.
+- 일단 위와 같은 테스트 케이스를 작성만 했는데도, 설계가 몇개 나왔다.
+  1. GradeManager에 메시지들이 MESSAGE_1, MESSAGE_2.. 와 같이 enum으로 관리
+  2. 함수가 static
+  3. prize가 null로 들어가는 경우도 생각해봐야함. 
+
+### 없는 변수, 함수 만들러가기
+- 현재 GradeManager에 MESSAGE_1이라는 변수랑, getGradeMessage()함수가 없으니 빨간 줄뜬다.
+- 이클립스에서 <kbd>ctrl</kbd> + <kbd>1</kbd> 누르던가 빨간색 클릭해서 만들러간다.
+![image](https://user-images.githubusercontent.com/21155325/58564261-96843580-8267-11e9-8b83-68882d5b9fd1.png)  
+
+#### 첫번째 테스트 케이스 통과
+- 일단 요렇게 만들어주고, (데이터타입은 수정해주어야한다.)
+- return 에 MESSAGE_1을 리턴하게 해주었다. 
+![image](https://user-images.githubusercontent.com/21155325/58564598-30e47900-8268-11e9-9f4a-e8287b641b92.png)  
+- 그리고 이제 테스트 돌리면 초록불뜨면서 통과된다. 
+![image](https://user-images.githubusercontent.com/21155325/58564673-596c7300-8268-11e9-8f9b-a2a563a89267.png)
+
+#### 위의 초록불이 뜻하는 것은?
+- 해당 모듈이 위 6개 케이스에 대해 "메시지1"이라는 문자열을 뱉어주는 게 요구사항의 끝이라면, GradeManager은 완성되었다고 보면 된다.
+- 하지만 우리의 요구사항은 저것보다는 좀더 많은 케이스를 충족시켜줘야하지.
+- 케이스 하나씩 추가해봄면 이제 테스트 실패 뜰것이다. 그러면 초록불로 만들어주기 위해 또 수정, 리팩토링을 해나가는거다.
+- 직무에 관리자를 넣고, 조건 point들을 넣어주니 로직 수정없이 테스트가 통과했다.
+- 이로써 gradeManager가 MESSAGE_1을 뽑아주는 것에 대해서는 검증 끝.
+![image](https://user-images.githubusercontent.com/21155325/58565252-5c1b9800-8269-11e9-94cc-a8f6158dda97.png)
+
