@@ -30,3 +30,74 @@
 
 - 커다란 로직을 다 생각하고 개발하는게 아닌, 작은 단위(메소드)부터 만들고 수정해나가는 작업이 반복된다. 이러면서 **패턴이 발견되고, 패턴들을 다시 정리(리팩토링)해나가다 보면 어느새 커다란 로직이 이쁘게 만들어져있는걸 발견하게 될것이다.** 
 
+# 실습 : GradeManager 만들기
+>직무가 사원일때,  
+![image](https://user-images.githubusercontent.com/21155325/58558006-ab0e0100-825a-11e9-8b36-cbc844b9cb68.png)
+
+> 직무가 관리자일때  
+![image](https://user-images.githubusercontent.com/21155325/58558829-c24dee00-825c-11e9-9a7a-377222e0a3dc.png)
+
+- 업무중에 어떤 사람의 영업실적 point에 따라서 각각 다른 메시지를 만들어줘야하는 로직이 있었다. (원래 인자들이 몇개 더 있는데, 예제의 간결성을 위해 간단하게 각색함.)
+- 기존 리거시에서는 
+````java
+if( 0 <= point && point < 500){
+    grade = 1;
+}else if ( 500 <= point && point < 1000){
+    grade = 2;
+}else if ( 1000 <= point && point < 1500){
+    grade = 3;
+    if(!prize.equals(""))
+        grade = 4;
+} .....
+.
+.
+ else if ( 3500 <= point && point < 4000){
+    grade = 13;
+    if(!prize.equals(""))
+        grade = 14;
+}else if ( 4000 <= point){
+    grade = 15;
+    if(!prize.equals(""))
+        grade = 16;
+   
+} 
+.
+.
+생략
+.
+.
+switch (grade) {
+    case 1:
+    case 9:
+        message = "메시지1";    
+        break;
+    case 2:
+    case 10:
+        message = "메시지2";    
+        break;
+    .
+    .
+    생략
+    .
+    .
+    default:
+        break;
+}
+````
+
+- 이런 스타일로 코드가 짜여져 있었다. 
+### 위와 같이 짰을때 장점은?
+- 그냥 봐도 코드가 요구사항 표와 1대1로 매칭 되면서 이게 무슨 일을 하는 로직인지 이해할 수 있다.
+- 그래서 다음 유지보수 개발자가 빠르게 팔로우업 할 수 있다.
+### 단점은?
+- 일단 코드 길이가 길고, 코드패턴이 반복되면서 중복이 많다.
+- 그래서 뭔가 grade 측정 기준이 바껴서 수정을 해야될때 여러 부분을 수정해줘야한다.
+
+### 내가 원하는 리팩토링 후의 모습
+```` java
+message1 = gradeManager.getGradeMessage("사원", 1555, "");
+message2 = gradeManager.getGradeMessage("사원", 1555, "bronze"); //bronze는 prize의 이름
+message3 = gradeManager.getGradeMessage("관리자", 3055, "bronze"); 
+````
+
+- 요런 식으로 gradeManager라는 객체의 getGradeMessage(직무, point, prize) 함수를 쓰면 필요한 message를 간편히 받아볼 수 있게끔 만들고 싶다. 
