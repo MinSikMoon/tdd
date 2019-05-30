@@ -91,7 +91,7 @@ switch (grade) {
 - 그래서 다음 유지보수 개발자가 빠르게 팔로우업 할 수 있다.
 ### 단점은?
 - 일단 코드 길이가 길고, 코드패턴이 반복되면서 중복이 많다.
-- 그래서 뭔가 grade 측정 기준이 바껴서 수정을 해야될때 여러 부분을 수정해줘야한다.
+- 그래서 뭔가 grade 측정 기준이 바껴서 수정을 해야될때 여러 부분을 반복적으로 수정해줘야한다.
 
 ### 내가 원하는 리팩토링 후의 모습
 ```` java
@@ -108,7 +108,7 @@ message3 = gradeManager.getGradeMessage("관리자", 3055, "bronze");
 - 요렇게 프로젝트 하나 생성해준다. 여기서부터 만들어나갈 것이다.
 - 사실 GradeManager도 존재하지 않는 상태에서 테스트 케이스에서 실패 후 만들러 가야되는데, 먼저 만들어 놓았다. 다음번에 수정해보겠음.
 
-## 1. 테스트1 : 메시지 1이 출력되는가? 
+## 1. 테스트1 : 메시지 1 출력 
 ![image](https://user-images.githubusercontent.com/21155325/58563585-612b1800-8266-11e9-8f23-add1e8155060.png)
 - 위와 같이 직무가 사원일때 point가 0~499, prize 유무에 상관없이 "메시지1"이라는 메시지를 받을 수 있어야 한다.
 ### 테스트 케이스 작성만으로도 우리가 얻은것.
@@ -137,3 +137,24 @@ message3 = gradeManager.getGradeMessage("관리자", 3055, "bronze");
 - 이로써 gradeManager가 MESSAGE_1을 뽑아주는 것에 대해서는 검증 끝.
 ![image](https://user-images.githubusercontent.com/21155325/58565252-5c1b9800-8269-11e9-94cc-a8f6158dda97.png)
 
+## 테스트 2 : 메시지 2 출력
+- 메시지2_테스트 를 만들어보자. 메시지1_테스트 복붙해서 이름만 고쳐보자.
+![image](https://user-images.githubusercontent.com/21155325/58632990-28e90f80-8322-11e9-9b9d-566c0d7e1f63.png)
+
+- 메시지2가 없으니 빨간줄 뜬다. 메시지2만들어주시고.
+![image](https://user-images.githubusercontent.com/21155325/58633068-5e8df880-8322-11e9-8b7d-bb0b63083178.png)
+- 테스트 돌려보면...(조건값 수정)
+![image](https://user-images.githubusercontent.com/21155325/58633927-e07f2100-8324-11e9-9b58-9b4142c00142.png)
+
+
+- 당연히 fail이 떠주신다... 메시지2가 아니라 메시지1이라고 리턴되서 fail났다고 한다. 
+- 이제 이 빨간불을 초록불로 바꿔주는 거에만 집중해서 로직 수정하러 가보자.
+![image](https://user-images.githubusercontent.com/21155325/58633952-f260c400-8324-11e9-84c1-5ed9081c1c71.png)
+- 요렇게 고쳐주고.. 테스트 돌려보면
+![image](https://user-images.githubusercontent.com/21155325/58634013-250abc80-8325-11e9-8551-3d3dd425235b.png)
+
+- 초록불 잘뜬다.
+- 오키, 2번째 테스트 케이스도 통과했다. 
+- 슬슬 뭔가 코드의 중복이 보이고, 패턴같은게 보인다. 몸이 근질 거리지만 좀만 참고 테스트 3만들러 가보자.
+
+## 테스트 3 : 메시지3 출력
