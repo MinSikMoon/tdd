@@ -1,4 +1,5 @@
 .settings
-.project
 bin/
 test.txt
+bin/
+.project
