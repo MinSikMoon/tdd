@@ -116,7 +116,7 @@ message3 = gradeManager.getGradeMessage("관리자", 3055, "bronze");
   1. GradeManager에 메시지들이 MESSAGE_1, MESSAGE_2.. 와 같이 enum으로 관리
   2. 함수가 static
   3. prize가 null로 들어가는 경우도 생각해봐야함. 
-
+  4. prize의 유무는 빈문자를 넣어주는지, 아닌지로 판별.
 ### 없는 변수, 함수 만들러가기
 - 현재 GradeManager에 MESSAGE_1이라는 변수랑, getGradeMessage()함수가 없으니 빨간 줄뜬다.
 - 이클립스에서 <kbd>ctrl</kbd> + <kbd>1</kbd> 누르던가 빨간색 클릭해서 만들러간다.
@@ -158,3 +158,10 @@ message3 = gradeManager.getGradeMessage("관리자", 3055, "bronze");
 - 슬슬 뭔가 코드의 중복이 보이고, 패턴같은게 보인다. 몸이 근질 거리지만 좀만 참고 테스트 3만들러 가보자.
 
 ## 테스트 3 : 메시지3 출력
+![image](https://user-images.githubusercontent.com/21155325/58634779-2210cb80-8327-11e9-843a-9eb6352e8816.png)
+- 테스트2랑 똑같다. 메시지3 만들어주고, 테스트 통과되도록 만들어보자.
+![image](https://user-images.githubusercontent.com/21155325/58635181-2db0c200-8328-11e9-8cd2-5d56a11ad5aa.png)
+- 요렇게 만들면 이제 초록불띄워주신다. 후후
+![image](https://user-images.githubusercontent.com/21155325/58635223-49b46380-8328-11e9-8cec-30c2333fc96c.png)
+
+## 리팩토링 타임 : 테스트4를 만들러가기전에 
