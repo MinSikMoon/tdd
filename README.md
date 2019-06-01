@@ -256,14 +256,14 @@ boolean isBetween (double point, double sameAndBiggerThan, double belowThan)
 - 리팩토링 후 : TO-BE
 ![image](https://user-images.githubusercontent.com/21155325/58746120-85207080-8495-11e9-9197-4ffe4bd9042a.png)
 - getGradeMessage만 놓고 보면
-- 요랬던게.
-![image](https://user-images.githubusercontent.com/21155325/58746160-f829e700-8495-11e9-80de-37de4a4069a9.png)
+- 요랬던게.  
+![image](https://user-images.githubusercontent.com/21155325/58746160-f829e700-8495-11e9-80de-37de4a4069a9.png)  
 - 요렇게 다듬어졌다.
-![image](https://user-images.githubusercontent.com/21155325/58746154-e5171700-8495-11e9-954d-86b29ddd19be.png)
+![image](https://user-images.githubusercontent.com/21155325/58746154-e5171700-8495-11e9-954d-86b29ddd19be.png)  
 ### 작은걸 고치는데 집중하다보니 어느새 코드가 다듬어져 있더라.
 - TO-BE 코드의 모습을 갖추기 까지, 우리는 그저 AS-WAS 코드의 매우작은 부분을 고쳐보고, 테스트 돌려보고, 다시 고쳐보고를 반복했을 뿐이다.
 - TO-BE 코드의 모습을 미리 설계하지 않았다. 그저 눈 앞에 닥친 작은 리팩토링만을 반복했을 뿐이다. 그런데 어느새 컴팩트하게 다듬어진 로직이 만들어져있다.
 - 요게 기존에 로직을 만들던 방식과 TDD의 차이점이라고 느껴졌다.  
 - 다시 한번 더, 우리가 리팩토링을 자신감 있게 할 수 있었던 이유는? = 테스트 코드가 갖춰져 있었기 때문에.
 - 테스트 4 만드는 것은 다음 시간에 써야겠다. 
-- 사실 요까지만 해도 TDD가 뭔지, 왜 하는건지, 이걸로 얻는 결과가 뭔지 거의 다 느낌이 왔을 거라 본다. 
+- 사실 요까지만 해도 TDD가 뭔지, 왜 하는건지, 이걸로 얻는 결과가 뭔지 거의 다 느낌이 왔을 거라 본다. 앞으로는 지금까지 했던 행위들의 반복이다.
