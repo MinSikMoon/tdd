@@ -258,7 +258,7 @@ boolean isBetween (double point, double sameAndBiggerThan, double belowThan)
 - getGradeMessage만 놓고 보면
 - 요랬던게.  
 ![image](https://user-images.githubusercontent.com/21155325/58746160-f829e700-8495-11e9-80de-37de4a4069a9.png)  
-- 요렇게 다듬어졌다.
+- 요렇게 다듬어졌다.  
 ![image](https://user-images.githubusercontent.com/21155325/58746154-e5171700-8495-11e9-954d-86b29ddd19be.png)  
 ### 작은걸 고치는데 집중하다보니 어느새 코드가 다듬어져 있더라.
 - TO-BE 코드의 모습을 갖추기 까지, 우리는 그저 AS-WAS 코드의 매우작은 부분을 고쳐보고, 테스트 돌려보고, 다시 고쳐보고를 반복했을 뿐이다.
