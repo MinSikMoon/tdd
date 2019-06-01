@@ -169,7 +169,7 @@ message3 = gradeManager.getGradeMessage("관리자", 3055, "bronze");
 ![image](https://user-images.githubusercontent.com/21155325/58635181-2db0c200-8328-11e9-8cd2-5d56a11ad5aa.png)
 - 이대로 두어도 문제 없지만, 리팩토링을 해서 동일로직 반복을 줄여보자.
 - 그냥 슥 보면, position을 체크해주고 point 범위를 분기해주는게 반복되는 게 보인다.
-### 1. point 범위 숫자를 배열의 요소 바꿔보자.
+### 리팩토링 1. point 범위 숫자를 배열의 요소 바꿔보자.
 ![image](https://user-images.githubusercontent.com/21155325/58745283-fd813480-8489-11e9-9912-4dfed61e6c65.png)
 - 요런식으로 말이다.
 - employeePoints라는 배열이 없으니 빨간줄 뜬다.  
@@ -186,7 +186,7 @@ message3 = gradeManager.getGradeMessage("관리자", 3055, "bronze");
 ### 계속 리팩토링 해보자.  
 ![image](https://user-images.githubusercontent.com/21155325/58745440-14c12180-848c-11e9-92ff-a3a08f7755fc.png)
 - managerPoints 배열도 만들어주고, 위 코드의 테스트 코드 통과 확인했다.
-### 2. isBetween 메소드 만들어주기
+### 리팩토링 2. isBetween 메소드 만들어주기
 - point가 기준이 되는 숫자의 사이에 있는 지를 체크하는 구문이 길어보인다. 
 ```` javascript
 boolean isBetween (double point, double sameAndBiggerThan, double belowThan)
@@ -199,3 +199,71 @@ boolean isBetween (double point, double sameAndBiggerThan, double belowThan)
 - 나머지들도 다 isBetween 함수로 교체 ㄱㄱ !!  
 ![image](https://user-images.githubusercontent.com/21155325/58745628-05db6e80-848e-11e9-9408-f0aab3614168.png)
 
+- isBetween으로 모두 교체하고 테스트 돌려보면 잘 통과된다. 
+
+### 리팩토링 3. message 들도 배열 요소로 만들기
+- return 해주는 메시지들도 그냥 배열의 요소로 만들면 되겠다는 생각이 든다.
+- 그 전에 employeePoints와 managerPoints 첫 요소에 0을 추가해주자. 0 이상에 대한 로직을 명시적으로 만들어주기 위해서다. 
+![image](https://user-images.githubusercontent.com/21155325/58745695-19d3a000-848f-11e9-97ab-213e59540d98.png)
+- 위 사진처럼 고치고 테스트 돌리면 실패난다. 
+![image](https://user-images.githubusercontent.com/21155325/58745708-4f788900-848f-11e9-8045-8237bf3b50d6.png)
+- 이제 points 배열의 0 인덱스에 위치한 수가 0이 되었기 때문이다. 
+- 메소드 로직을 수정해줘서 다시 초록색으로 맞춰주겠다.
+![image](https://user-images.githubusercontent.com/21155325/58745766-fc530600-848f-11e9-8c46-64c340d3c988.png)
+
+- 테스트 돌려보면 통과한다.
+- 그리고 뭔가 숫자끼리 규칙성이 보이는것 같다. 
+
+### 리팩토링 4. if-else 없애기
+- 직무를 체크해서 분기시켜주는 if - else를 봐보자.
+- 뭔가 동일 구문이 반복되는 것 같아 찝찝하다.
+- 뭐 때문에 분기시켜 주는 것일까?
+- 잘보면 로직을 타는 배열이 employeePoints냐, managerPoints냐의 차이밖에 없다.
+- 오키 그러면 배열 생산해주는 메소드 하나 만들어주면 if-else 없어지겠군.
+![image](https://user-images.githubusercontent.com/21155325/58745841-88b1f880-8491-11e9-8d2c-170232f29fe9.png)
+- getPointsArrayByPosition 이라는 메소드를 만들면 요렇게 바꿀 수 있다는 거지.
+- 그리고 이제는 로직이 완벽하게 동일하므로 if-else를 없앨 수 있겠지.
+![image](https://user-images.githubusercontent.com/21155325/58745856-c9117680-8491-11e9-9b77-88288cef671e.png)
+- 확 짧아졌다.
+- 이제 getPointsArrayByPosition() 메소드 만들러 가보자구.
+![image](https://user-images.githubusercontent.com/21155325/58745922-b2b7ea80-8492-11e9-8822-8da7dad5eb10.png)
+- 요렇게 만들어주시고. 테스트 케이스 돌려보면 
+![image](https://user-images.githubusercontent.com/21155325/58745919-a03db100-8492-11e9-852b-3ab689aa8297.png)
+- 잘 통과됩니다. 
+### 리팩토링 5. 반복 isBetween 구문 없애기
+- 보면 isBetween 메소드가 반복된다. 안에 인자랑 return 메시지만 바뀐다.
+- 뭔가 루프 쓰면 될것 같은 느낌이 든다. 
+![image](https://user-images.githubusercontent.com/21155325/58745934-f90d4980-8492-11e9-9888-6959c49b1eba.png)
+- 먼저 메시지 들을 배열에 넣어 규칙성 발견 쉽게 만들어주자.
+![image](https://user-images.githubusercontent.com/21155325/58746000-0840c700-8494-11e9-8f62-afb0886a0787.png)
+- 오 뭔가 더 for 루프 쉽게끔 바뀐것 같다. 자신감 뿜뿜
+- 그리고 저렇게 조금씩 바뀔때마다 테스트 돌려보는게 좋다. 이제 일일이 다 스샷 찍으려니 너무 낭비되는 페이지가 많은것 같아. 이런건 스킵한다. 
+![image](https://user-images.githubusercontent.com/21155325/58746042-8735ff80-8494-11e9-9105-3711637a902f.png)
+- 요렇게 바꿔주고 테스트 돌려보았다.
+![image](https://user-images.githubusercontent.com/21155325/58746049-a2087400-8494-11e9-8ffa-969bfd466be4.png)
+- !!! fail 뜬다. 왜? isBetween 비교문보면 i+1 인덱스를 넣어주는게 있는데, 이게 인덱스 최대값보다 넘어가니까 outOfIndex 되는거임.
+- 그럼 for 구문 속의 최대값에 -1해주면 통과될까? 시도해보자
+![image](https://user-images.githubusercontent.com/21155325/58746070-f3b0fe80-8494-11e9-8496-1b6c60787453.png)
+- 요렇게 바꿔주고 테스트 돌려보면...
+![image](https://user-images.githubusercontent.com/21155325/58746078-04617480-8495-11e9-88c6-bd87d8b27bd7.png)
+- 오오오 잘돌아간다 ㅠㅜ
+
+## 테스트3 + 리팩토링 결과를 돌아보며
+- 일단 리팩토링까지한 코드가 테스트 1+2+3 통과를 했다. 
+- 중간에 스샷이 많아서 길어보이지만, 일단 리팩토링, 전/후만 가져다가 비교해보자. 
+- #### 리팩토링 전 : AS-WAS
+![image](https://user-images.githubusercontent.com/21155325/58745311-5c46ae00-848a-11e9-9f03-4a206c42730e.png)  
+- 리팩토링 후 : TO-BE
+![image](https://user-images.githubusercontent.com/21155325/58746120-85207080-8495-11e9-9197-4ffe4bd9042a.png)
+- getGradeMessage만 놓고 보면
+- 요랬던게.
+![image](https://user-images.githubusercontent.com/21155325/58746160-f829e700-8495-11e9-80de-37de4a4069a9.png)
+- 요렇게 다듬어졌다.
+![image](https://user-images.githubusercontent.com/21155325/58746154-e5171700-8495-11e9-954d-86b29ddd19be.png)
+### 작은걸 고치는데 집중하다보니 어느새 코드가 다듬어져 있더라.
+- TO-BE 코드의 모습을 갖추기 까지, 우리는 그저 AS-WAS 코드의 매우작은 부분을 고쳐보고, 테스트 돌려보고, 다시 고쳐보고를 반복했을 뿐이다.
+- TO-BE 코드의 모습을 미리 설계하지 않았다. 그저 눈 앞에 닥친 작은 리팩토링만을 반복했을 뿐이다. 그런데 어느새 컴팩트하게 다듬어진 로직이 만들어져있다.
+- 요게 기존에 로직을 만들던 방식과 TDD의 차이점이라고 느껴졌다.  
+- 다시 한번 더, 우리가 리팩토링을 자신감 있게 할 수 있었던 이유는? = 테스트 코드가 갖춰져 있었기 때문에.
+- 테스트 4 만드는 것은 다음 시간에 써야겠다. 
+- 사실 요까지만 해도 TDD가 뭔지, 왜 하는건지, 이걸로 얻는 결과가 뭔지 거의 다 느낌이 왔을 거라 본다. 
