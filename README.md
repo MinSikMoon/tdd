@@ -165,3 +165,37 @@ message3 = gradeManager.getGradeMessage("관리자", 3055, "bronze");
 ![image](https://user-images.githubusercontent.com/21155325/58635223-49b46380-8328-11e9-8cec-30c2333fc96c.png)
 
 ## 리팩토링 타임 : 테스트4를 만들러가기전에 
+- 메시지3 출력 기능까지 작동 및 테스트를 통과한 GradeManager와 해당 메소드를 구현해 보았다.  
+![image](https://user-images.githubusercontent.com/21155325/58635181-2db0c200-8328-11e9-8cd2-5d56a11ad5aa.png)
+- 이대로 두어도 문제 없지만, 리팩토링을 해서 동일로직 반복을 줄여보자.
+- 그냥 슥 보면, position을 체크해주고 point 범위를 분기해주는게 반복되는 게 보인다.
+### 1. point 범위 숫자를 배열의 요소 바꿔보자.
+![image](https://user-images.githubusercontent.com/21155325/58745283-fd813480-8489-11e9-9912-4dfed61e6c65.png)
+- 요런식으로 말이다.
+- employeePoints라는 배열이 없으니 빨간줄 뜬다.  
+- employeePoints 배열을 만들어주고, 테스트 돌려보자.  
+![image](https://user-images.githubusercontent.com/21155325/58745311-5c46ae00-848a-11e9-9f03-4a206c42730e.png)  
+![image](https://user-images.githubusercontent.com/21155325/58745318-77b1b900-848a-11e9-8461-e835b1e0e35b.png)
+
+- 테스트 잘 통과한다. 
+- #### 위 케이스를 통해서 TDD 장점을 하나 더 알 수 있다.
+- #### 그게 뭐냐면 리팩토링을 안심하고 할 수 있다는 점이다.
+- 예를 들어, 메소드의 동작은 그대로지만, 코드만 다른 모양으로 수정했다고 할때, 과연 코드를 고치기 전과 코드를 고친 후 메소드가 똑같이 동작하고 있다는 걸 어떻게 보장할 수 있을까?
+- 위의 예제에서는 이를 보장할 수 있다. 왜냐면 테스트 코드를 만들어놓았기 때문이다. 리팩토링 전 후 모두 테스트를 통과했기에 우리는 GradeManager의 getGradeMessage() 메소드가 리팩토링 전과 똑같이 작동하고 있다고 말할 수 있다. 
+- #### 테스트 코드를 만들어놓았기에, 우리는 안심하고 코드를 리팩토링 할 수 있다. 
+### 계속 리팩토링 해보자.  
+![image](https://user-images.githubusercontent.com/21155325/58745440-14c12180-848c-11e9-92ff-a3a08f7755fc.png)
+- managerPoints 배열도 만들어주고, 위 코드의 테스트 코드 통과 확인했다.
+### 2. isBetween 메소드 만들어주기
+- point가 기준이 되는 숫자의 사이에 있는 지를 체크하는 구문이 길어보인다. 
+```` javascript
+boolean isBetween (double point, double sameAndBiggerThan, double belowThan)
+````
+- point가 특정수 이상, 특정수 미만인지 boolean으로 알려주는 함수를 만들어서 간결하게 만들고 싶다. 
+![image](https://user-images.githubusercontent.com/21155325/58745519-f871b480-848c-11e9-849e-46b539a014b1.png)
+- 빨간 불 뜨니까 만들러 가보자.
+![image](https://user-images.githubusercontent.com/21155325/58745584-ad0bd600-848d-11e9-9196-4d4c54ae7da0.png)
+- 요렇게 만들어 보고 테스트 돌리면 통과한다.
+- 나머지들도 다 isBetween 함수로 교체 ㄱㄱ !!  
+![image](https://user-images.githubusercontent.com/21155325/58745628-05db6e80-848e-11e9-9408-f0aab3614168.png)
+
