@@ -298,7 +298,7 @@ boolean isBetween (double point, double sameAndBiggerThan, double belowThan)
 - 일단 리팩토링까지한 코드가 테스트 1+2+3 통과를 했다. 
 - 중간에 스샷이 많아서 길어보이지만, 일단 리팩토링, 전/후만 가져다가 비교해보자. 
 - #### 리팩토링 전 : AS-WAS
-![image](https://user-images.githubusercontent.com/21155325/58745311-5c46ae00-848a-11e9-9f03-4a206c42730e.png)  
+![image](https://user-images.githubusercontent.com/21155325/58635181-2db0c200-8328-11e9-8cd2-5d56a11ad5aa.png) 
 - 리팩토링 후 : TO-BE
 ![image](https://user-images.githubusercontent.com/21155325/58746120-85207080-8495-11e9-9197-4ffe4bd9042a.png)
 - getGradeMessage만 놓고 보면
