@@ -1,15 +1,17 @@
 package test.module;
 
-import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 import main.module.GradeManager;
 
-class GradeManagerTest {
+
+public class GradeManagerTest {
 
 	@Test
-	void 메시지1_테스트() {
+	public void 메시지1_테스트() {
 		//사원
 		assertEquals(GradeManager.MESSAGE_1, GradeManager.getGradeMessage("사원",0, ""));
 		assertEquals(GradeManager.MESSAGE_1, GradeManager.getGradeMessage("사원",0, null));
@@ -28,7 +30,7 @@ class GradeManagerTest {
 	}
 	
 	@Test
-	void 메시지2_테스트() {
+	public void 메시지2_테스트() {
 		//사원
 		assertEquals(GradeManager.MESSAGE_2, GradeManager.getGradeMessage("사원",500, ""));
 		assertEquals(GradeManager.MESSAGE_2, GradeManager.getGradeMessage("사원",500, "some prize"));
@@ -43,7 +45,7 @@ class GradeManagerTest {
 	}
 
 	@Test
-	void 메시지3_테스트() {
+	public void 메시지3_테스트() {
 		//사원
 		assertEquals(GradeManager.MESSAGE_3, GradeManager.getGradeMessage("사원",1000, ""));
 		assertEquals(GradeManager.MESSAGE_3, GradeManager.getGradeMessage("사원",1000, "some prize"));

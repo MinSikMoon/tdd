@@ -3,3 +3,6 @@ bin/
 test.txt
 bin/
 .project
+target
+test-report
+lib_test/classes

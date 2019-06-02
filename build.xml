@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ant-test" basedir=".">
+
+    <!-- 소스 폴더  -->
+    <property name="src.dir" value="src"/>
+    <property name="src.main.dir" value="${src.dir}/main"/>
+    <property name="src.test.dir" value="${src.dir}/test"/>
+
+
+    <!-- 라이브러리 위치 -->
+    <property name="lib.dir" value="lib"/>
+    <property name="lib.test.dir" value="lib_test"/>
+
+    <!-- 빌드 타겟 -->
+    <property name="target.dir" value="target"/>
+    <property name="classes.dir" value="${target.dir}/classes"/>
+    <property name="TITLE-PROJECT" value="spring3"/>
+    <property name="report.dir" location="test-report" />
+    <!-- set lib -->
+    <path id="libpath">
+        <fileset dir="${lib.dir}" includes="**/*.jar"/>
+    </path>
+
+    <path id="libpath-test">
+        <fileset dir="${lib.test.dir}" includes="**/*.jar"/>
+        <pathelement location="${lib.test.dir}/classes"/>
+    </path>
+
+    <path id="classpath">
+        <pathelement location="${target}/classes"/>
+    </path>
+    <!-- clean -->
+    <target name="clean">
+        <delete dir="${target.dir}"/>
+        <delete dir="${report.dir}"/>
+    </target>
+    <!-- init -->
+    <target name="init" depends="clean">
+        <mkdir dir="${report.dir}" />
+    </target>
+    <!-- 1. test를 위한 공간을 따로 만든다. -->
+    <!-- compile -->
+    <target name="compile" depends="init">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="libpath" encoding="utf-8" includeantruntime="true"/>
+    </target>
+    <!-- copy lib into target -->
+    <target name="copy-lib" depends="compile">
+        <copy todir="${lib.test.dir}">
+            <fileset dir="${target.dir}"/>
+        </copy>
+    </target>
+    <!-- test -->
+    <target name="test" depends="copy-lib">
+        <junit printsummary="yes" haltonfailure="no">
+            <classpath refid="libpath-test"/>
+            <formatter type="plain"/>
+            <batchtest fork="yes" todir="${report.dir}">
+                <fileset dir="${src.dir}">
+                    <include name="**/*Test*.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+</project>
